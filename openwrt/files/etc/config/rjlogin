@@ -1,0 +1,7 @@
+config server
+	option enable '0'
+	option username ''
+	option password ''
+	option time '06:00'
+	option url 'http://10.10.12.13/eportal/InterFace.do?method=login'
+	option referer 'http://10.10.12.13/eportal/index.jsp'

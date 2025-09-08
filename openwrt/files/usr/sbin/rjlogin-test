@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# RJLogin 测试脚本
+# 用于测试登录功能是否正常工作
+
+echo "=== RJLogin 测试脚本 ==="
+echo "检查配置..."
+
+# 检查配置文件
+if [ ! -f "/etc/config/rjlogin" ]; then
+    echo "错误: 配置文件 /etc/config/rjlogin 不存在"
+    exit 1
+fi
+
+# 显示当前配置
+echo "当前配置:"
+echo "启用状态: $(uci -q get rjlogin.@server[0].enable)"
+echo "用户名: $(uci -q get rjlogin.@server[0].username)"
+echo "密码: [隐藏]"
+echo "执行时间: $(uci -q get rjlogin.@server[0].time)"
+echo "登录URL: $(uci -q get rjlogin.@server[0].url)"
+
+# 检查cron任务
+echo ""
+echo "当前cron任务:"
+grep rjlogin /etc/crontabs/root 2>/dev/null || echo "未找到相关定时任务"
+
+echo ""
+echo "手动测试登录..."
+/usr/sbin/rjlogin
+
+echo ""
+echo "查看最近的日志:"
+tail -10 /var/log/rjlogin.log 2>/dev/null || echo "无日志文件"
+
+echo ""
+echo "测试完成"
